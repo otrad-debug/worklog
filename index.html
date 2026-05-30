@@ -829,23 +829,22 @@ function deleteRecord(id) {
 // ─── COMBINED INVOICE ─────────────────────────────────────────────────────────
 function buildCombinedText(ci) {
   const sep = '═════════════════════';
-  const thin = '─────────────────────';
   const lines = ['COMBINED INVOICE', sep,
-    `Employee : ${ci.employee}`, `Weeks    : ${ci.weeks.length} week${ci.weeks.length>1?'s':''}`,
-    `Generated: ${ci.generated}`, ''];
+    `Employee : ${ci.employee}`,
+    `Generated: ${ci.generated}`,
+    '', 'WEEKS SUMMARY', sep];
   ci.weeks.forEach((wr,i) => {
-    lines.push(`WEEK ${i+1} — ${fmtDate(wr.weekStart)}`, thin);
-    wr.days.forEach(d => {
-      const lunch = d.lunchOut&&d.lunchIn ? `  (lunch ${d.lunchOut}–${d.lunchIn})` : '';
-      lines.push(`  ${d.day.padEnd(9)}: ${d.in} → ${d.out}${lunch}  [${d.hours!=='—'?d.hours+'h':'—'}]`);
-    });
-    lines.push(`  Subtotal: ${wr.totalHours}h = $${wr.totalPay}`, '');
+    lines.push(`Week ${i+1}  ${fmtDate(wr.weekStart).padEnd(18)} ${wr.totalHours.toFixed(2)}h  ${wr.totalPay}`);
   });
-  lines.push(sep, `Total Hours : ${ci.totalHours.toFixed(2)}h`, `Rate        : $${ci.rate}/hr`,
-    `TOTAL DUE   : $${ci.totalPay}`, sep);
+  lines.push(sep,
+    `Total Hours : ${ci.totalHours.toFixed(2)}h`,
+    `Rate        : ${ci.rate}/hr`,
+    `TOTAL DUE   : ${ci.totalPay}`,
+    sep);
   if (ci.venmo) {
     const h = ci.venmo.replace('@','');
-    lines.push('', 'Payment via Venmo:', `https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+wages`);
+    lines.push('', 'Payment via Venmo:',
+      `https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+wages`);
   }
   return lines.join('\n');
 }
