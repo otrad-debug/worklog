@@ -582,7 +582,7 @@ function buildSMSText(inv) {
   if (inv.venmo) {
     const h = inv.venmo.replace('@','');
     lines.push('', 'Payment via Venmo:',
-      `https://venmo.com/${h}?txn=pay&amount=${inv.total}&note=${encodeURIComponent(fmtShortDate(inv.weekStart))}`);
+      `https://venmo.com/${h}?txn=pay&amount=${inv.total}&note=Week+of+${inv.weekStart}`);
   }
   return lines.join('\n');
 }
@@ -659,7 +659,7 @@ function sendSMS() {
 function openVenmo() {
   if (!state.invoice||!state.invoice.venmo) return;
   const h = state.invoice.venmo.replace('@','');
-  window.open(`https://venmo.com/${h}?txn=pay&amount=${state.invoice.total}&note=Wages+week+of+${state.invoice.weekStart}`, '_blank');
+  window.open(`https://venmo.com/${h}?txn=pay&amount=${state.invoice.total}&note=Week+of+${state.invoice.weekStart}`, '_blank');
 }
 
 function copyInvoice() {
@@ -844,7 +844,7 @@ function buildCombinedText(ci) {
   if (ci.venmo) {
     const h = ci.venmo.replace('@','');
     lines.push('', 'Payment via Venmo:',
-      `https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+wages`);
+      `https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+weeks`);
   }
   return lines.join('\n');
 }
@@ -920,7 +920,7 @@ function sendCombinedSMS() {
 function openCombinedVenmo() {
   const ci = window._combinedInvoice; if(!ci||!ci.venmo) return;
   const h = ci.venmo.replace('@','');
-  window.open(`https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+wages`, '_blank');
+  window.open(`https://venmo.com/${h}?txn=pay&amount=${ci.totalPay}&note=Combined+weeks`, '_blank');
 }
 
 function copyCombinedInvoice() {
